@@ -1,0 +1,12 @@
+runtime: go121
+env: standard
+instance_class: F1
+
+handlers:
+- url: /.*
+  script: auto
+
+service_account: YOURSANAME@YOURPROJECT.iam.gserviceaccount.com # replace with your service account email
+env_variables:
+  GCS_BUCKET: example_bucket # fill out with your GCS bucket containing static files 
+  IAP_AUDIENCE: /projects/PROJECT_NUMBER/apps/PROJECT_NAME # replace with your project number and project name, or with audience from IAP once enabled
