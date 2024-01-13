@@ -56,7 +56,7 @@ func main() {
 func handle(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 
-	if !validateIAP(r) {
+	if !validateIAP(ctx, r) {
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
@@ -140,7 +140,7 @@ func logRequest(r *http.Request, status int, err error) {
 	}
 }
 
-func validateIAP(r *http.Request) bool {
+func validateIAP(ctx context.Context, r *http.Request) bool {
 
 	iapHeader := r.Header.Get("X-Goog-IAP-JWT-Assertion")
 	if iapHeader == "" {
@@ -149,7 +149,6 @@ func validateIAP(r *http.Request) bool {
 	}
 
 	expectedAudience := os.Getenv("IAP_AUDIENCE")
-	ctx := context.Background()
 	_, err := idtoken.Validate(ctx, iapHeader, expectedAudience)
 	if err != nil {
 		log.Printf("Invalid IAP header: %v", err)
